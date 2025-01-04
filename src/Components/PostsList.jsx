@@ -1,13 +1,20 @@
+import { useState } from "react";
 import NewPost from "./NewPost";
 import Post from "./Post";
 import classes from './PostsList.module.css';
+import Modal from "./Modal";
 
-function PostsList(){
+function PostsList({isPosting,hideModalHandler}){
+    
+
     return(
         <>
-            <NewPost />
+            {isPosting && <Modal hideModalHandler={hideModalHandler}>
+                <NewPost
+                hideModalHandler={hideModalHandler}/>
+                </Modal>}
+            
             <ul className={classes.posts}>
-                <Post author="John" body="Hello, world!" />
                 <Post author="Haegi" body="HRRRR" />
             </ul>
         </>

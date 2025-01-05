@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classes from './NewPost.module.css';
 
-function NewPost({hideModalHandler}) {
+function NewPost({hideModalHandler,addPostHandler}) {
   
   const [enteredBody, setEnteredBody] = useState('');
   const [enteredAuthor, setEnteredAuthor] = useState('');
@@ -18,10 +18,11 @@ function NewPost({hideModalHandler}) {
       event.preventDefault();
       const postData = {
           body: enteredBody,
-          autuhor: enteredAuthor
+          author: enteredAuthor
       }
       console.log(postData);
       hideModalHandler();
+      addPostHandler(postData)
     }
       
   return (

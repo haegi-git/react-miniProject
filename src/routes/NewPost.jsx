@@ -1,50 +1,42 @@
 import { useState } from 'react';
 import classes from './NewPost.module.css';
 import Modal from '../Components/Modal';
-import { Link } from 'react-router-dom';
+import { Form, Link, redirect } from 'react-router-dom';
 
-function NewPost({addPostHandler}) {
+function NewPost() {
   
-  const [enteredBody, setEnteredBody] = useState('');
-  const [enteredAuthor, setEnteredAuthor] = useState('');
-  const changeBodyHandler = (event) => {
-      console.log(event.target.value);
-      setEnteredBody(event.target.value);
-  }
-  const changeAuthorHandler = (event) => {
-      console.log(event.target.value);
-      setEnteredAuthor(event.target.value);
-  }
-
-  const submitHandler = (event) => {
-      event.preventDefault();
-      const postData = {
-          body: enteredBody,
-          author: enteredAuthor
-      }
-      console.log(postData);
-      hideModalHandler();
-      addPostHandler(postData)
-    }
       
   return (
     <Modal>
-    <form onSubmit={submitHandler} className={classes.form}>
+    <Form method='post' className={classes.form}>
       <p>
         <label htmlFor="body">Text</label>
-        <textarea id="body" required rows={3} onChange={changeBodyHandler} />
+        <textarea name='body' id="body" required rows={3}/>
       </p>
       <p>
         <label htmlFor="name">Your name</label>
-        <input type="text" id="name" required onChange={changeAuthorHandler} />
+        <input name='author' type="text" id="name" required/>
       </p>
       <p className={classes.actions}>
           <button>Submit</button>
           <Link to="/" type='button'>Cancel</Link>
       </p>
-    </form>
+    </Form>
     </Modal>
   );
 }
 
 export default NewPost;
+
+export async function action({request}){
+  const formData = await request.formData();
+  const postData = Object.fromEntries(formData);
+  await fetch('http://localhost:8080/posts',{
+    method: 'POST',
+    body: JSON.stringify(postData),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+return redirect('/');
+}

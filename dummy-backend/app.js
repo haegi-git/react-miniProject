@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const { getStoredPosts, storePosts } = require('./data/posts');
 
@@ -7,14 +8,14 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  // Attach CORS headers
-  // Required when using a detached backend (that runs on a different domain)
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.use(cors({
+  origin: 'https://react-mini-project-chi.vercel.app',  // 프론트엔드 URL
+  methods: ['GET', 'POST'],  // 허용할 메소드
+  allowedHeaders: ['Content-Type']
+}));
+
+app.use(bodyParser.json());
+
 
 app.get('/posts', async (req, res) => {
   const storedPosts = await getStoredPosts();
@@ -40,4 +41,5 @@ app.post('/posts', async (req, res) => {
   res.status(201).json({ message: 'Stored new post.', post: newPost });
 });
 
-app.listen(8080);
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

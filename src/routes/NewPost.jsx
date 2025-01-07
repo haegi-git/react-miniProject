@@ -31,7 +31,7 @@ export default NewPost;
 export async function action({request}){
   const formData = await request.formData();
   const postData = Object.fromEntries(formData);
-  await fetch('http://localhost:8080/posts',{
+  await fetch('https://react-miniproject-2r8o.onrender.com',{
     method: 'POST',
     body: JSON.stringify(postData),
     headers: {

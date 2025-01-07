@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import classes from './NewPost.module.css';
+import Modal from '../Components/Modal';
+import { Link } from 'react-router-dom';
 
-function NewPost({hideModalHandler,addPostHandler}) {
+function NewPost({addPostHandler}) {
   
   const [enteredBody, setEnteredBody] = useState('');
   const [enteredAuthor, setEnteredAuthor] = useState('');
@@ -26,6 +28,7 @@ function NewPost({hideModalHandler,addPostHandler}) {
     }
       
   return (
+    <Modal>
     <form onSubmit={submitHandler} className={classes.form}>
       <p>
         <label htmlFor="body">Text</label>
@@ -37,9 +40,10 @@ function NewPost({hideModalHandler,addPostHandler}) {
       </p>
       <p className={classes.actions}>
           <button>Submit</button>
-          <button onClick={hideModalHandler} type='button'>Cancel</button>
+          <Link to="/" type='button'>Cancel</Link>
       </p>
     </form>
+    </Modal>
   );
 }
 
